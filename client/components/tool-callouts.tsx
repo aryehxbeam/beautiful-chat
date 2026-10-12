@@ -61,6 +61,16 @@ export function ToolCallout({
 }: ToolCalloutProps) {
   const [expanded, setExpanded] = useState(defaultExpanded);
 
+  // A card mounts while its call is still running, so the state that belongs
+  // to its completion or failure arrives as a prop change, which useState
+  // alone would drop. Follow the transitions only, so a card opened or closed
+  // by hand keeps that state until the call changes status again.
+  const [previousDefaultExpanded, setPreviousDefaultExpanded] = useState(defaultExpanded);
+  if (previousDefaultExpanded !== defaultExpanded) {
+    setPreviousDefaultExpanded(defaultExpanded);
+    setExpanded(defaultExpanded);
+  }
+
   // Every branch below needs a payload. A tool that carries none — a hub op
   // with no parsed record, an unmapped kind — would otherwise draw an empty
   // panel, so the raw output takes over.

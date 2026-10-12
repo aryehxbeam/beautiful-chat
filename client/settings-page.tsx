@@ -353,6 +353,14 @@ export function BeautifulChatSettingsPage({ theme }: PluginSurfaceProps) {
           tokens={tokens}
         />
 
+        <ToggleRow
+          title="Collapse by default"
+          description="Tool calls and reasoning stay folded while they run, so the chat does not jump open and shut around each call. A failed call still opens on its own, and a card you open by hand stays open. Turn this off to watch running calls as they stream."
+          value={preferences.collapseByDefault}
+          onChange={(collapseByDefault) => updateEnhancerPreferences({ collapseByDefault })}
+          tokens={tokens}
+        />
+
         <ChoiceRow
           title="Markdown style"
           description="Document is airy and built for long answers. Compact tightens the spacing for short replies. Terminal sets the body in the code face."

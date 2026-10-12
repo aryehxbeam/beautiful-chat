@@ -45,6 +45,12 @@ export interface EnhancerPreferences {
   assistantMarkdown: boolean;
   /** Which look the markdown renderer uses. */
   markdownVariant: MarkdownVariantPreference;
+  /**
+   * Tool calls and reasoning traces stay folded while they run instead of
+   * opening and closing around each call. A failed call still opens, and a
+   * card opened by hand stays open.
+   */
+  collapseByDefault: boolean;
 }
 
 const STORAGE_KEY = "paseo/beautiful-chat/preferences/v1";
@@ -59,6 +65,7 @@ export const DEFAULT_PREFERENCES: Readonly<EnhancerPreferences> = {
   selectionActions: true,
   assistantMarkdown: true,
   markdownVariant: "document",
+  collapseByDefault: true,
 };
 
 const listeners = new Set<() => void>();
@@ -105,6 +112,10 @@ function loadPreferences(): EnhancerPreferences {
         candidate.markdownVariant === "compact" || candidate.markdownVariant === "terminal"
           ? candidate.markdownVariant
           : DEFAULT_PREFERENCES.markdownVariant,
+      collapseByDefault:
+        typeof candidate.collapseByDefault === "boolean"
+          ? candidate.collapseByDefault
+          : DEFAULT_PREFERENCES.collapseByDefault,
     };
   } catch {
     return { ...DEFAULT_PREFERENCES };
